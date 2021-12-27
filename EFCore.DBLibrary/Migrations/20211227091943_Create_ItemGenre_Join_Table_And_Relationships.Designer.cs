@@ -4,6 +4,7 @@ using EFCore.DBLibrary;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFCore.DBLibrary.Migrations
 {
     [DbContext(typeof(InventoryDbContext))]
-    partial class InventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211227091943_Create_ItemGenre_Join_Table_And_Relationships")]
+    partial class Create_ItemGenre_Join_Table_And_Relationships
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -208,8 +210,7 @@ namespace EFCore.DBLibrary.Migrations
 
                     b.HasIndex("GenreId");
 
-                    b.HasIndex("ItemId", "GenreId")
-                        .IsUnique();
+                    b.HasIndex("ItemId");
 
                     b.ToTable("ItemGenres");
                 });
