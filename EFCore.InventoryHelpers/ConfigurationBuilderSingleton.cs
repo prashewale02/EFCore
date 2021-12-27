@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace EFCore.Sample
+namespace EFCore.InventoryHelpers
 {
-    internal sealed class ConfigurationBuilderSingleton
+    public sealed class ConfigurationBuilderSingleton
     {
 
         #region Private Members 

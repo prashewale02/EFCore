@@ -4,6 +4,7 @@ using EFCore.DBLibrary;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFCore.DBLibrary.Migrations
 {
     [DbContext(typeof(InventoryDbContext))]
-    partial class InventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211227052843_Create_Categories_Table_With_Item_Relationship")]
+    partial class Create_Categories_Table_With_Item_Relationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,26 +61,6 @@ namespace EFCore.DBLibrary.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("EFCore.InventoryModels.CategoryDetails", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ColorName")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
-
-                    b.Property<string>("ColorValue")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CategoryDetails");
                 });
 
             modelBuilder.Entity("EFCore.InventoryModels.Item", b =>
@@ -151,75 +133,6 @@ namespace EFCore.DBLibrary.Migrations
                     b.ToTable("Items");
                 });
 
-            modelBuilder.Entity("EFCore.InventoryModels.Player", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("CreatedByUserId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeletable")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedUserId")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Player");
-                });
-
-            modelBuilder.Entity("ItemPlayers", b =>
-                {
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlayerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ItemId", "PlayerId");
-
-                    b.HasIndex("PlayerId");
-
-                    b.ToTable("ItemPlayers");
-                });
-
-            modelBuilder.Entity("EFCore.InventoryModels.CategoryDetails", b =>
-                {
-                    b.HasOne("EFCore.InventoryModels.Category", "Category")
-                        .WithOne("CategoryDetails")
-                        .HasForeignKey("EFCore.InventoryModels.CategoryDetails", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-                });
-
             modelBuilder.Entity("EFCore.InventoryModels.Item", b =>
                 {
                     b.HasOne("EFCore.InventoryModels.Category", "Category")
@@ -229,28 +142,8 @@ namespace EFCore.DBLibrary.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("ItemPlayers", b =>
-                {
-                    b.HasOne("EFCore.InventoryModels.Item", null)
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_PlayerItem_Items_ItemId");
-
-                    b.HasOne("EFCore.InventoryModels.Player", null)
-                        .WithMany()
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_ItemPlayer_Players_PlayerId");
-                });
-
             modelBuilder.Entity("EFCore.InventoryModels.Category", b =>
                 {
-                    b.Navigation("CategoryDetails")
-                        .IsRequired();
-
                     b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
