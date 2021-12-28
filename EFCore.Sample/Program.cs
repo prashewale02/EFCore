@@ -3,8 +3,9 @@ using EFCore.InventoryModels;
 using EFCore.InventoryHelpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Data.SqlClient;
 
-namespace EFCore.Sample
+namespace EFCore.ConsoleApp.InventoryManager
 {
     class Program
     {
@@ -27,72 +28,99 @@ namespace EFCore.Sample
             _optionsBuilder.UseSqlServer(_configuration.GetConnectionString("InventoryManager"));
         }
 
-        private static void EnsureItems()
-        {
-            EnsureItem("Batman Begins", "You either die the hero or live long enough to see yourself become the villain", "Christian Bale, Katie Holmes");
-            EnsureItem("Inception", "You mustn't be afraid to dream a little bigger, darling", "Leonardo DiCaprio, Tom Hardy, Joseph Gordon-Levitt");
-            EnsureItem("Remember the Titans", "Left Side, Strong Side", "Denzell Washington, Will Patton");
-            EnsureItem("Star Wars: The Empire Strikes Back", "He will join us or die, master", "Harrison Ford, Carrie Fisher, Mark Hamill");
-            EnsureItem("Top Gun", "I feel the need, the need for speed!", "Tom Cruise, Anthony Edwards, Val Kilmer");
-        }
-
-        private static void EnsureItem(string name, string description, string notes)
-        {
-            Random r = new Random();
-            using (var db = new InventoryDbContext(_optionsBuilder.Options))
-            {
-                // Determine if item exist:
-                var existingItem = db.Items
-                    .FirstOrDefault(x => x.Name.ToLower() == name.ToLower());
-
-                if (existingItem == null)
-                {
-                    // Doesn't exist, add it.
-                    var item = new Item()
-                    {
-                        Name = name,
-                        CreatedByUserId = _loggedInUserId,
-                        IsActive = true,
-                        Quantity = r.Next(1,1000),
-                        Description = description,
-                        Notes = notes
-                    };
-                    db.Items.Add(item);
-                    db.SaveChanges();
-                }
-            }
-        }
-
         private static void ListInventory()
         {
+            Console.WriteLine("-> Inventory Items : ");
             using (var db = new InventoryDbContext(_optionsBuilder.Options))
             {
                 var items = db.Items.OrderBy(x => x.Name).ToList();
-                items.ForEach(x => Console.WriteLine($"New Item: {x.Name}"));
+                items.ForEach(x => Console.WriteLine($"\tNew Item: {x.Name}"));
             }
         }
 
-        private static void DeleteAllItems()
+        private static void GetItemsForListing()
         {
+            Console.WriteLine("-> Getting Items For Listing :");
             using (var db = new InventoryDbContext(_optionsBuilder.Options))
             {
-                var items = db.Items.ToList();
-                db.Items.RemoveRange(items);
-                db.SaveChanges();
-            }
-        }
+                var results = db.ItemsForListing.FromSqlRaw(
+                    "EXECUTE dbo.GetItemsForListing").ToList();
 
-        private static void UpdateItems()
-        {
-            using (var db = new InventoryDbContext(_optionsBuilder.Options))
-            {
-                var items = db.Items.ToList();
-                foreach(var item in items)
+                foreach (var item in results)
                 {
-                    item.CurrentOrFinalPrice = 9.99M;
+                    var output = $"\tITEM {item.Name} - {item.Description}";
+                    if (!string.IsNullOrWhiteSpace(item.CategoryName))
+                    {
+                        output = $"{output} has category : {item.CategoryName}";
+                    }
+                    Console.WriteLine(output);
                 }
-                db.Items.UpdateRange(items);
-                db.SaveChanges();
+            }
+        }
+
+        private static void GetAllActiveItemsAsPipeDelimitedString()
+        {
+            using (var db = new InventoryDbContext(_optionsBuilder.Options))
+            {
+                var isActiveParam = new SqlParameter("IsActive", 1);
+                var result = db.AllItemsOutput.FromSqlRaw(
+                    @"SELECT [dbo].[ItemNamesPipeDelimitedString] (@IsActive)" +
+                    "AllItems", isActiveParam).FirstOrDefault();
+
+                Console.WriteLine($"-> All Active Items: {result.AllItems}");
+            }
+        }
+
+        private static void GetItemsTotalValues()
+        {
+            Console.WriteLine("-> Items Totals : ");
+            using (var db = new InventoryDbContext(_optionsBuilder.Options))
+            {
+                var isActiveParam = new SqlParameter("IsActive", 1);
+
+                var result = db.GetItemsTotalValues.FromSqlRaw(
+                        "SELECT * FROM [dbo].[GetItemsTotalValue] (@IsActive)", 
+                        isActiveParam
+                    ).ToList();
+
+                Console.WriteLine($"\t{"ID", -10}{"Name", -50}{"Quantity", -15}{"TotalValue",-20}");
+
+                foreach(var item in result)
+                {
+                    Console.WriteLine(
+                        $"\t{item.Id, -10}" +
+                        $"{item.Name, -50}" +
+                        $"{item.Quantity, -15}" +
+                        $"{item.TotalValue, -20}"
+                    );
+                }
+            }
+        }
+
+        private static void GetFullItemDetails()
+        {
+            Console.WriteLine("-> Items Details : ");
+
+            using (var db = new InventoryDbContext(_optionsBuilder.Options))
+            {
+                var result = db.FullItemDetails.FromSqlRaw(
+                    "SELECT * FROM [dbo].[ViewFullItemDetails]" +
+                    "ORDER BY ItemName, GenreName, Category, PlayerName"
+                    ).ToList();
+
+                Console.WriteLine($"\t{"ID",-10}{"ItemName",-50}{"PlayerName",-20}{"Category", -10}{"GenreName",-20}{"ItemDescription",-50}");
+
+                foreach (var item in result)
+                {
+                    Console.WriteLine(
+                       $"\t{item.Id,-10}" +
+                       $"{item.ItemName,-50}" +
+                       $"{item.PlayerName,-20}" +
+                       $"{item.Category, -20}" +
+                       $"{item.GenreName, -20}" +
+                       $"{item.ItemDescription,-50}"
+                   );
+                }
             }
         }
 
@@ -100,11 +128,29 @@ namespace EFCore.Sample
 
         static void Main(String[] args)
         {
+            Console.WriteLine("***** Welcome to Entity Framework Core 6 *****");
+
             BuildOptions();
-            // DeleteAllItems();
-            EnsureItems();
-            UpdateItems();
+            Console.WriteLine();
+
             ListInventory();
+            Console.WriteLine();
+
+            GetItemsForListing();
+            Console.WriteLine();
+
+            GetAllActiveItemsAsPipeDelimitedString();
+            Console.WriteLine();
+
+            GetItemsTotalValues();
+            Console.WriteLine();
+
+            GetFullItemDetails();
+            Console.WriteLine();
+
+            Console.WriteLine();
+            Console.WriteLine("--> Please press Enter to exit.");
+            Console.ReadLine();
         }
 
     }

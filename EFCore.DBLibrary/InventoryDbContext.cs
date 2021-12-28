@@ -1,4 +1,6 @@
 ﻿using EFCore.InventoryModels;
+using EFCore.InventoryModels.DTOs;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -14,13 +16,34 @@ namespace EFCore.DBLibrary
 
         #endregion
 
-
         #region public Properties
+
+        #region Tables
 
         public DbSet<Item> Items { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<CategoryDetails> CategoryDetails { get; set; }
         public DbSet<Genre> Genres { get; set; }
+
+        #endregion
+
+        #region Procedures
+
+        public DbSet<GetItemsForListingDTO> ItemsForListing { get; set; }
+
+        #endregion
+
+        #region Functions
+
+        public DbSet<AllItemsPipeDelimitedStringDTO> AllItemsOutput { get; set; }
+        public DbSet<GetItemsTotalValueDTO> GetItemsTotalValues { get; set; }
+        #endregion
+
+        #region Views
+
+        public DbSet<FullItemDetailsDTO> FullItemDetails { get; set; }
+
+        #endregion
 
         #endregion
 
@@ -82,6 +105,84 @@ namespace EFCore.DBLibrary
                                         "FK_PlayerItem_Items_ItemId")
                                     .OnDelete(DeleteBehavior.Cascade)
                         );
+
+            modelBuilder.Entity<GetItemsForListingDTO>(x =>
+            {
+                x.HasNoKey();
+                x.ToView("ItemsForListing");
+            });
+
+            modelBuilder.Entity<AllItemsPipeDelimitedStringDTO>(x =>
+            {
+                x.HasNoKey();
+                x.ToView("AllItemsOutput");
+            });
+
+            modelBuilder.Entity<GetItemsTotalValueDTO>(x =>
+            {
+                x.HasNoKey();
+                x.ToView("GetItemsTotalValues");
+            });
+
+            modelBuilder.Entity<FullItemDetailsDTO>(x =>
+            {
+                x.HasNoKey();
+                x.ToView("FullItemDetails");
+            });
+
+            // Seed default data to the database
+            var genreCreateDate = new DateTime(2021, 01, 01);
+            modelBuilder.Entity<Genre>(x =>
+            {
+                x.HasData 
+                (
+                    new Genre()
+                    {
+                        Id = 1,
+                        CreatedDate = genreCreateDate,
+                        IsActive = true,
+                        IsDeleted = false,
+                        Name = "Fantasy",
+                        CreatedByUserId = _systemUserId
+                    },
+                    new Genre()
+                    {
+                        Id = 2,
+                        CreatedDate = genreCreateDate,
+                        IsActive = true,
+                        IsDeleted = false,
+                        Name = "Sci/Fi",
+                        CreatedByUserId = _systemUserId
+                    },
+                    new Genre()
+                    {
+                        Id = 3,
+                        CreatedDate = genreCreateDate,
+                        IsActive = true,
+                        IsDeleted = false,
+                        Name = "Horror",
+                        CreatedByUserId = _systemUserId
+                    },
+                    new Genre()
+                    {
+                        Id = 4,
+                        CreatedDate = genreCreateDate,
+                        IsActive = true,
+                        IsDeleted = false,
+                        Name = "Comedy",
+                        CreatedByUserId = _systemUserId
+                    },
+                    new Genre()
+                    {
+                        Id = 5,
+                        CreatedDate = genreCreateDate,
+                        IsActive = true,
+                        IsDeleted = false,
+                        Name = "Drama",
+                        CreatedByUserId = _systemUserId,
+                    }
+                );
+            });
         }
 
         public override int SaveChanges()
@@ -90,9 +191,8 @@ namespace EFCore.DBLibrary
 
             foreach (var entry in tracker.Entries())
             {
-                if (entry.Entity is FullAuditModel)
+                if (entry.Entity is FullAuditModel referenceEntity)
                 {
-                    var referenceEntity = entry.Entity as FullAuditModel;
                     switch (entry.State)
                     {
                         case EntityState.Added:

@@ -24,6 +24,6 @@ namespace EFCore.InventoryModels
 
         [Required]
         [DefaultValue(false)]
-        public bool IsDeletable { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

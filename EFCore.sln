@@ -5,18 +5,20 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCore.DBLibrary", "EFCore.DBLibrary\EFCore.DBLibrary.csproj", "{E01B4D84-F690-4800-8299-52A2031E583B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCore.Sample", "EFCore.Sample\EFCore.Sample.csproj", "{B72F6384-0205-4736-A515-333297D7BD3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCore.ConsoleApp.InventoryManager", "EFCore.Sample\EFCore.ConsoleApp.InventoryManager.csproj", "{B72F6384-0205-4736-A515-333297D7BD3F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8BE1E6A3-1C30-4477-A18C-CD0A6C5A7604}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCore.InventoryModels", "EFCore.InventoryModels\EFCore.InventoryModels.csproj", "{18850ACA-3B33-4EBB-BFD6-F4099F402473}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCore.InventoryModels", "EFCore.InventoryModels\EFCore.InventoryModels.csproj", "{18850ACA-3B33-4EBB-BFD6-F4099F402473}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCore.InventoryHelpers", "EFCore.InventoryHelpers\EFCore.InventoryHelpers.csproj", "{F4F96BD8-13AD-48D3-B3CD-B80D8AE08C94}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCore.InventoryHelpers", "EFCore.InventoryHelpers\EFCore.InventoryHelpers.csproj", "{F4F96BD8-13AD-48D3-B3CD-B80D8AE08C94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCore.WebUI", "EFCore.WebUI\EFCore.WebUI.csproj", "{D34D5C69-CE0B-48B8-83E9-C05D547AF3BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCore.InventoryDataMigrator", "EFCore.InventoryDataMigrator\EFCore.InventoryDataMigrator.csproj", "{7BD1613F-359E-457F-AA9A-F1EF3E219AC7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCore.ConsoleApp.AdvantureWorks", "EFCore.Console.AdvantureWorks\EFCore.ConsoleApp.AdvantureWorks.csproj", "{D39EF336-BBF1-43B4-98B2-8869796C52F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,10 +42,14 @@ Global
 		{F4F96BD8-13AD-48D3-B3CD-B80D8AE08C94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4F96BD8-13AD-48D3-B3CD-B80D8AE08C94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4F96BD8-13AD-48D3-B3CD-B80D8AE08C94}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D34D5C69-CE0B-48B8-83E9-C05D547AF3BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D34D5C69-CE0B-48B8-83E9-C05D547AF3BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D34D5C69-CE0B-48B8-83E9-C05D547AF3BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D34D5C69-CE0B-48B8-83E9-C05D547AF3BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BD1613F-359E-457F-AA9A-F1EF3E219AC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BD1613F-359E-457F-AA9A-F1EF3E219AC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BD1613F-359E-457F-AA9A-F1EF3E219AC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BD1613F-359E-457F-AA9A-F1EF3E219AC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D39EF336-BBF1-43B4-98B2-8869796C52F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D39EF336-BBF1-43B4-98B2-8869796C52F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D39EF336-BBF1-43B4-98B2-8869796C52F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D39EF336-BBF1-43B4-98B2-8869796C52F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

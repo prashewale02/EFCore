@@ -4,6 +4,7 @@ using EFCore.DBLibrary;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFCore.DBLibrary.Migrations
 {
     [DbContext(typeof(InventoryDbContext))]
-    partial class InventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211228074209_UpdateItems_Change_IsDeletable_Column_To_IsDeleted")]
+    partial class UpdateItems_Change_IsDeletable_Column_To_IsDeleted
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,63 +83,6 @@ namespace EFCore.DBLibrary.Migrations
                     b.ToTable("CategoryDetails");
                 });
 
-            modelBuilder.Entity("EFCore.InventoryModels.DTOs.AllItemsPipeDelimitedStringDTO", b =>
-                {
-                    b.Property<string>("AllItems")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToView("AllItemsOutput");
-                });
-
-            modelBuilder.Entity("EFCore.InventoryModels.DTOs.GetItemsForListingDTO", b =>
-                {
-                    b.Property<string>("CategoryName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToView("ItemsForListing");
-                });
-
-            modelBuilder.Entity("EFCore.InventoryModels.DTOs.GetItemsTotalValueDTO", b =>
-                {
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("PurchasePrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<decimal?>("TotalValue")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.ToView("GetItemsTotalValues");
-                });
-
             modelBuilder.Entity("EFCore.InventoryModels.Genre", b =>
                 {
                     b.Property<int>("Id")
@@ -175,53 +120,6 @@ namespace EFCore.DBLibrary.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Genres");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedByUserId = "2fd28110-93d0-427d-9207-d55dbca680fa",
-                            CreatedDate = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Fantasy"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedByUserId = "2fd28110-93d0-427d-9207-d55dbca680fa",
-                            CreatedDate = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Sci/Fi"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedByUserId = "2fd28110-93d0-427d-9207-d55dbca680fa",
-                            CreatedDate = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Horror"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedByUserId = "2fd28110-93d0-427d-9207-d55dbca680fa",
-                            CreatedDate = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Comedy"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreatedByUserId = "2fd28110-93d0-427d-9207-d55dbca680fa",
-                            CreatedDate = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsActive = true,
-                            IsDeleted = false,
-                            Name = "Drama"
-                        });
                 });
 
             modelBuilder.Entity("EFCore.InventoryModels.Item", b =>
