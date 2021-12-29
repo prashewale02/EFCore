@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace EFCore.DBLibrary.Migrations
+namespace EFCore.DBLibrary.InventoryManager.Migrations
 {
     public partial class initial_setup_create_items_table : Migration
     {

@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCore.DBLibrary", "EFCore.DBLibrary\EFCore.DBLibrary.csproj", "{E01B4D84-F690-4800-8299-52A2031E583B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCore.ConsoleApp.InventoryManager", "EFCore.Sample\EFCore.ConsoleApp.InventoryManager.csproj", "{B72F6384-0205-4736-A515-333297D7BD3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCore.DBLibrary.InventoryManager", "EFCore.DBLibrary\EFCore.DBLibrary.InventoryManager.csproj", "{E01B4D84-F690-4800-8299-52A2031E583B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8BE1E6A3-1C30-4477-A18C-CD0A6C5A7604}"
 	ProjectSection(SolutionItems) = preProject
@@ -16,9 +14,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCore.InventoryModels", "E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCore.InventoryHelpers", "EFCore.InventoryHelpers\EFCore.InventoryHelpers.csproj", "{F4F96BD8-13AD-48D3-B3CD-B80D8AE08C94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCore.InventoryDataMigrator", "EFCore.InventoryDataMigrator\EFCore.InventoryDataMigrator.csproj", "{7BD1613F-359E-457F-AA9A-F1EF3E219AC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCore.InventoryDataMigrator", "EFCore.InventoryDataMigrator\EFCore.InventoryDataMigrator.csproj", "{7BD1613F-359E-457F-AA9A-F1EF3E219AC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCore.ConsoleApp.AdvantureWorks", "EFCore.Console.AdvantureWorks\EFCore.ConsoleApp.AdvantureWorks.csproj", "{D39EF336-BBF1-43B4-98B2-8869796C52F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCore.ConsoleApp.InventoryManager", "EFCore.ConsoleApp.InventoryManager\EFCore.ConsoleApp.InventoryManager.csproj", "{E45E1BCF-60BF-4DE4-AF8A-9152F7DDFB0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCore.ConsoleApp.AdventureWorks", "EFCore.ConsoleApp.AdventureWorks\EFCore.ConsoleApp.AdventureWorks.csproj", "{838D4106-1802-456E-8EF8-0537FA23EBA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCore.DBLibrary.AdventureWorks", "EFCore.DBLibrary.AdventureWorks\EFCore.DBLibrary.AdventureWorks.csproj", "{2D4F4E71-B70D-46B7-ABFF-FA0522603505}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,10 +32,6 @@ Global
 		{E01B4D84-F690-4800-8299-52A2031E583B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E01B4D84-F690-4800-8299-52A2031E583B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E01B4D84-F690-4800-8299-52A2031E583B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B72F6384-0205-4736-A515-333297D7BD3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B72F6384-0205-4736-A515-333297D7BD3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B72F6384-0205-4736-A515-333297D7BD3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B72F6384-0205-4736-A515-333297D7BD3F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{18850ACA-3B33-4EBB-BFD6-F4099F402473}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{18850ACA-3B33-4EBB-BFD6-F4099F402473}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18850ACA-3B33-4EBB-BFD6-F4099F402473}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -46,10 +44,18 @@ Global
 		{7BD1613F-359E-457F-AA9A-F1EF3E219AC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7BD1613F-359E-457F-AA9A-F1EF3E219AC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7BD1613F-359E-457F-AA9A-F1EF3E219AC7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D39EF336-BBF1-43B4-98B2-8869796C52F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D39EF336-BBF1-43B4-98B2-8869796C52F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D39EF336-BBF1-43B4-98B2-8869796C52F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D39EF336-BBF1-43B4-98B2-8869796C52F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E45E1BCF-60BF-4DE4-AF8A-9152F7DDFB0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E45E1BCF-60BF-4DE4-AF8A-9152F7DDFB0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E45E1BCF-60BF-4DE4-AF8A-9152F7DDFB0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E45E1BCF-60BF-4DE4-AF8A-9152F7DDFB0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{838D4106-1802-456E-8EF8-0537FA23EBA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{838D4106-1802-456E-8EF8-0537FA23EBA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{838D4106-1802-456E-8EF8-0537FA23EBA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{838D4106-1802-456E-8EF8-0537FA23EBA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D4F4E71-B70D-46B7-ABFF-FA0522603505}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D4F4E71-B70D-46B7-ABFF-FA0522603505}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D4F4E71-B70D-46B7-ABFF-FA0522603505}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D4F4E71-B70D-46B7-ABFF-FA0522603505}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

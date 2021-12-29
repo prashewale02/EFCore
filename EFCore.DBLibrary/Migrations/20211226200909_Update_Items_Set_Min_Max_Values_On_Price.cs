@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace EFCore.DBLibrary.Migrations
+namespace EFCore.DBLibrary.InventoryManager.Migrations
 {
     public partial class Update_Items_Set_Min_Max_Values_On_Price : Migration
     {

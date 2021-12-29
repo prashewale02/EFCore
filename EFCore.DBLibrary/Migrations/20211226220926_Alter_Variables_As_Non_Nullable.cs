@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace EFCore.DBLibrary.Migrations
+namespace EFCore.DBLibrary.InventoryManager.Migrations
 {
     public partial class Alter_Variables_As_Non_Nullable : Migration
     {

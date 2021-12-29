@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace EFCore.DBLibrary.Migrations
+namespace EFCore.DBLibrary.InventoryManager.Migrations
 {
     public partial class Update_Item_Enforce_String_MaxLength : Migration
     {

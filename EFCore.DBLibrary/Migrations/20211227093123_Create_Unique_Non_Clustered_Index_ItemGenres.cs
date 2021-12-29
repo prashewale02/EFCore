@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace EFCore.DBLibrary.Migrations
+namespace EFCore.DBLibrary.InventoryManager.Migrations
 {
     public partial class Create_Unique_Non_Clustered_Index_ItemGenres : Migration
     {

@@ -4,7 +4,7 @@ using EFCore.InventoryModels.DTOs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace EFCore.DBLibrary
+namespace EFCore.DBLibrary.InventoryManager
 {
     public class InventoryDbContext : DbContext
     {

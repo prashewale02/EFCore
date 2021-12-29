@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations.Operations.Builders;
 using System.Reflection;
 using System.Text;
 
-namespace EFCore.DBLibrary.Migrations.Scripts
+namespace EFCore.DBLibrary.InventoryManager.Migrations.Scripts
 {
     public static class MigrationBuilderSqlResource
     {
