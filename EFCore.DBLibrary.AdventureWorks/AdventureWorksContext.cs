@@ -9,16 +9,17 @@ namespace EFCore.DBLibrary.AdventureWorks
 {
     public partial class AdventureWorksContext : DbContext
     {
+        IConfigurationRoot? _configuration;
 
         public AdventureWorksContext()
         {
-            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            //ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public AdventureWorksContext(DbContextOptions<AdventureWorksContext> options)
             : base(options)
         {
-            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            //ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public virtual DbSet<Address> Addresses { get; set; } = null!;
@@ -117,25 +118,25 @@ namespace EFCore.DBLibrary.AdventureWorks
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
-            {  
-                IConfigurationRoot? _configuration;
+            {
+                //IConfigurationRoot? _configuration;
 
-                _configuration = ConfigurationBuilderSingleton.ConfigurationRoot;
+                //_configuration = ConfigurationBuilderSingleton.ConfigurationRoot;
 
-                optionsBuilder = new DbContextOptionsBuilder<AdventureWorksContext>();
-                
-                optionsBuilder.UseSqlServer(_configuration.GetConnectionString("AdventureWorks"));
+                //optionsBuilder = new DbContextOptionsBuilder<AdventureWorksContext>();
 
-                //var builder = new ConfigurationBuilder()
-                //                .SetBasePath(Directory.GetCurrentDirectory())
-                //                .AddJsonFile("appsettings.json",
-                //                    optional: true, reloadOnChange: true);
+                //optionsBuilder.UseSqlServer(_configuration.GetConnectionString("AdventureWorks"));
 
-                //_configuration = builder.Build();
-                //var connectionString =
-                //    _configuration.GetConnectionString("AdventureWorks");
+                var builder = new ConfigurationBuilder()
+                                .SetBasePath(Directory.GetCurrentDirectory())
+                                .AddJsonFile("appsettings.json",
+                                    optional: true, reloadOnChange: true);
 
-                //optionsBuilder.UseSqlServer(connectionString);
+                _configuration = builder.Build();
+                var connectionString =
+                    _configuration.GetConnectionString("AdventureWorks");
+
+                optionsBuilder.UseSqlServer(connectionString);
             }
         }
 

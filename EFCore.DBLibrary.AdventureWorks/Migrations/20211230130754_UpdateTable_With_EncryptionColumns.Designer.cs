@@ -4,6 +4,7 @@ using EFCore.DBLibrary.AdventureWorks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFCore.DBLibrary.AdventureWorks.Migrations
 {
     [DbContext(typeof(AdventureWorksContext))]
-    partial class AdventureWorksContextModelSnapshot : ModelSnapshot
+    [Migration("20211230130754_UpdateTable_With_EncryptionColumns")]
+    partial class UpdateTable_With_EncryptionColumns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

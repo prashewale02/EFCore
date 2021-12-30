@@ -11,7 +11,7 @@ namespace EFCore.InventoryModels
         public int Id { get; set; }
 
         [StringLength(InventoryModelsConstants.MAX_USERID_LENGTH)]
-        public string CreatedByUserId { get; set; }
+        public string CreatedByUserId { get; set; } = string.Empty;
 
         public DateTime CreatedDate { get; set; }
        

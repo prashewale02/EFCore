@@ -9,7 +9,7 @@ namespace EFCore.DBLibrary.AdventureWorks.DTOs
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public decimal? SalesYtd { get; set; }
-        public IEnumerable<string> Territories { get; set; }
+        public IEnumerable<string> Territories { get; set; } = new List<string>();
         public int TotalProductsSold { get; set; }
         public int TotalOrders { get; set; }
         public string DisplayName => $"{FirstName} {LastName}";

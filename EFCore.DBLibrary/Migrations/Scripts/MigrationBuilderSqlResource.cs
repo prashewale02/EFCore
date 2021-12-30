@@ -11,18 +11,30 @@ namespace EFCore.DBLibrary.InventoryManager.Migrations.Scripts
         public static OperationBuilder<SqlOperation> SqlResource(
             this MigrationBuilder mb, string relativeFileName)
         {
-            using (var stream = 
-                Assembly.GetAssembly(typeof(MigrationBuilderSqlResource))
-                        .GetManifestResourceStream(relativeFileName))
+            var assembly = Assembly.GetAssembly(typeof(MigrationBuilderSqlResource));
+
+            if ( assembly is not null)
             {
-                using (var ms = new MemoryStream())
+                using (Stream? stream = 
+                            assembly.GetManifestResourceStream(relativeFileName))
                 {
-                    stream.CopyTo(ms);
-                    var data = ms.ToArray();
-                    var text = Encoding.UTF8.GetString(data, 3, data.Length - 3);
-                    return mb.Sql(text);
+                    if( stream is not null)
+                    {
+                        using (var ms = new MemoryStream())
+                        {
+                            stream.CopyTo(ms);
+                            var data = ms.ToArray();
+                            var text = Encoding.UTF8.GetString(data, 3,
+                                data.Length - 3);
+                            return mb.Sql(text);
+                        }
+                    }
+
+                    throw new Exception("File Not Found!");
                 }
             }
+
+            throw new Exception("Assembly is Null!");
         }
     }
 }

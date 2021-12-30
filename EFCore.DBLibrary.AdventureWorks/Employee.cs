@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EFCore.DBLibrary.AdventureWorks
 {
@@ -83,5 +85,23 @@ namespace EFCore.DBLibrary.AdventureWorks
         public virtual ICollection<EmployeePayHistory> EmployeePayHistories { get; set; }
         public virtual ICollection<JobCandidate> JobCandidates { get; set; }
         public virtual ICollection<PurchaseOrderHeader> PurchaseOrderHeaders { get; set; }
+
+        [StringLength(15)]
+        public string? NationalIDNumberBackup { get; set; }
+
+        [StringLength(50)]
+        public string? JobTitleBackup { get; set; }
+
+        [Column(TypeName = "date")]
+        public DateTime BirthDateBackup { get; set; }
+
+        [StringLength(1)]
+        public string? MaritalStatusBackup { get; set; }
+
+        [StringLength(1)]
+        public string? GenderBackup { get; set; }
+
+        [Column(TypeName = "date")]
+        public DateTime HireDateBackup { get; set; }
     }
 }

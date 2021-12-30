@@ -12,10 +12,10 @@ namespace EFCore.InventoryModels
         public int Id { get; set; }
 
         public virtual int ItemId { get; set; }
-        public virtual Item Item { get; set; }
+        public virtual Item? Item { get; set; }
 
         public virtual int GenreId { get; set; }
-        public virtual Genre Genre { get; set; }
+        public virtual Genre? Genre { get; set; }
 
     }
 }

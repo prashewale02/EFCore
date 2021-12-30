@@ -52,7 +52,10 @@ namespace EFCore.DBLibrary.InventoryManager
         /// <summary>
         /// Default constructor for scaffolding
         /// </summary>
-        public InventoryDbContext() { }
+        public InventoryDbContext() 
+        {
+
+        }
 
         /// <summary>
         /// The Complex constructor for allowing dependency injection.

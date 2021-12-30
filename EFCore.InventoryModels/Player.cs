@@ -5,7 +5,7 @@ namespace EFCore.InventoryModels
     public class Player : FullAuditModel
     {
         [StringLength(InventoryModelsConstants.MAX_PLAYERNAME_LENGTH)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [StringLength(InventoryModelsConstants.MAX_PLAYERDESCRIPTION_LENGTH)]
         public string? Description { get; set; }

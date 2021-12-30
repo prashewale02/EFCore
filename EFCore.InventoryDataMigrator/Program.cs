@@ -1,4 +1,4 @@
-﻿using EFCore.DBLibrary;
+﻿using EFCore.DBLibrary.InventoryManager;
 using EFCore.InventoryHelpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -8,7 +8,7 @@ namespace EFCore.InventoryDataMigrator
     class Program
     {
         private static IConfigurationRoot? _configuration;
-        private static DbContextOptionsBuilder<InventoryDbContext> _optionsBuilder;
+        private static DbContextOptionsBuilder<InventoryDbContext> _optionsBuilder = new DbContextOptionsBuilder<InventoryDbContext>();
 
         private static void BuildOptions()
         {

@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EFCore.InventoryModels
 {
     public class Item : FullAuditModel
-    { 
+    {
+        [Column(TypeName = "VARCHAR")]
         [StringLength(InventoryModelsConstants.MAX_NAME_LENGTH)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [Range(InventoryModelsConstants.MIN_QUANTITY,
             InventoryModelsConstants.MAX_QUANTITY)]
@@ -34,7 +36,7 @@ namespace EFCore.InventoryModels
 
         public int? CategoryId { get; set; }
 
-        public virtual Category Category { get; set; }
+        public virtual Category? Category { get; set; }
 
         public virtual List<Player> Players { get; set; } = new List<Player>();
         public virtual List<ItemGenre> Genres { get; set; } = new List<ItemGenre>();

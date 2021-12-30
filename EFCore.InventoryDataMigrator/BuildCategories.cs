@@ -1,4 +1,4 @@
-﻿using EFCore.DBLibrary;
+﻿using EFCore.DBLibrary.InventoryManager;
 using EFCore.InventoryModels;
 
 namespace EFCore.InventoryDataMigrator

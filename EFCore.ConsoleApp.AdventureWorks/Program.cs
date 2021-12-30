@@ -12,7 +12,7 @@ namespace EFCore.ConsoleApp.AdventureWorks
         #region Private Members
 
         private static IConfigurationRoot? _configuration;
-        private static DbContextOptionsBuilder<AdventureWorksContext> _optionsBuilder;
+        private static DbContextOptionsBuilder<AdventureWorksContext> _optionsBuilder = new DbContextOptionsBuilder<AdventureWorksContext>();
 
         #endregion
 
@@ -70,7 +70,7 @@ namespace EFCore.ConsoleApp.AdventureWorks
         {
             Console.WriteLine("-> Connecting to AdventureWorks database using connection string.");
             _configuration = ConfigurationBuilderSingleton.ConfigurationRoot;
-            _optionsBuilder = new DbContextOptionsBuilder<AdventureWorksContext>();
+            //_optionsBuilder = new DbContextOptionsBuilder<AdventureWorksContext>();
             _optionsBuilder.UseSqlServer(_configuration.GetConnectionString("AdventureWorks"));
             Console.WriteLine("\tSuccessfully connected to the database.");
         }
