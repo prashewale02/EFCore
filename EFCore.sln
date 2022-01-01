@@ -28,6 +28,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCore.Inventory.BusinessLo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCore.Inventory.UnitTests", "EFCore.Inventory.UnitTests\EFCore.Inventory.UnitTests.csproj", "{8EC72276-340D-4BA0-96A7-C0EAAB2533D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCore.Inventory.IntegrationTests", "EFCore.Inventory.IntegrationTests\EFCore.Inventory.IntegrationTests.csproj", "{EA39C0DA-A611-48CD-9EF0-2126EF821A83}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCore.WebIdentity", "EFCore.WebIdentity\EFCore.WebIdentity.csproj", "{090650A4-ECA8-45BC-B7B5-B17151246C0D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +78,14 @@ Global
 		{8EC72276-340D-4BA0-96A7-C0EAAB2533D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EC72276-340D-4BA0-96A7-C0EAAB2533D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EC72276-340D-4BA0-96A7-C0EAAB2533D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA39C0DA-A611-48CD-9EF0-2126EF821A83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA39C0DA-A611-48CD-9EF0-2126EF821A83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA39C0DA-A611-48CD-9EF0-2126EF821A83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA39C0DA-A611-48CD-9EF0-2126EF821A83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{090650A4-ECA8-45BC-B7B5-B17151246C0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{090650A4-ECA8-45BC-B7B5-B17151246C0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{090650A4-ECA8-45BC-B7B5-B17151246C0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{090650A4-ECA8-45BC-B7B5-B17151246C0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

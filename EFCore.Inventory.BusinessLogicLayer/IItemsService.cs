@@ -4,15 +4,15 @@ namespace EFCore.Inventory.BusinessLogicLayer
 {
     public interface IItemsService
     {
-        List<ItemDTO> GetItems();
-        List<ItemDTO> GetItemsByDateRange(DateTime minDateValue, DateTime maxDateValue);
-        List<GetItemsForListingDTO> GetItemsForListingFromProcedure();
-        List<GetItemsTotalValueDTO> GetItemsTotalValues(bool isActive);
-        string GetAllItemsPipeDelimitedString();
-        List<FullItemDetailsDTO> GetItemsWithGenresAndCategories();
-        int UpsertItem(CreateOrUpdateItemDTO item);
-        void UpsertItems(List<CreateOrUpdateItemDTO> items);
-        void DeleteItem(int id);
-        void DeleteItems(List<int> itemIds);
+        Task<List<ItemDTO>> GetItems();
+        Task<List<ItemDTO>> GetItemsByDateRange(DateTime minDateValue, DateTime maxDateValue);
+        Task<List<GetItemsForListingDTO>> GetItemsForListingFromProcedure();
+        Task<List<GetItemsTotalValueDTO>> GetItemsTotalValues(bool isActive);
+        Task<string> GetAllItemsPipeDelimitedString();
+        Task<List<FullItemDetailsDTO>> GetItemsWithGenresAndCategories();
+        Task<int> UpsertItem(CreateOrUpdateItemDTO item);
+        Task UpsertItems(List<CreateOrUpdateItemDTO> items);
+        Task DeleteItem(int id);
+        Task DeleteItems(List<int> itemIds);
     }
 }

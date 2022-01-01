@@ -4,6 +4,6 @@ namespace EFCore.Inventory.DatabaseAccessLayer
 {
     public interface ICategoriesRepo
     {
-        List<CategoryDTO> ListCategoriesAndDetails();
+        Task<List<CategoryDTO>> ListCategoriesAndDetails();
     }
 }

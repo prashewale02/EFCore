@@ -27,12 +27,12 @@ namespace EFCore.Inventory.DatabaseAccessLayer
 
         #region Public Methods
 
-        public List<CategoryDTO> ListCategoriesAndDetails()
+        public async Task<List<CategoryDTO>> ListCategoriesAndDetails()
         {
-            return _context.Categories
-                        .Include(x => x.CategoryDetails)
-                        .ProjectTo<CategoryDTO>(_mapper.ConfigurationProvider)
-                        .ToList();
+            return await _context.Categories
+                            .Include(x => x.CategoryDetails)
+                            .ProjectTo<CategoryDTO>(_mapper.ConfigurationProvider)
+                            .ToListAsync();
         } 
 
         #endregion

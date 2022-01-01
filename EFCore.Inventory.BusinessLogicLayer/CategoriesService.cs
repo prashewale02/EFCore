@@ -24,9 +24,9 @@ namespace EFCore.Inventory.BusinessLogicLayer
 
         #region Public Methods
 
-        public List<CategoryDTO> ListCategoriesAndDetails()
+        public async Task<List<CategoryDTO>> ListCategoriesAndDetails()
         {
-            return _dbRepo.ListCategoriesAndDetails();
+            return await _dbRepo.ListCategoriesAndDetails();
         }
 
         #endregion

@@ -35,76 +35,79 @@ namespace EFCore.Inventory.DatabaseAccessLayer
 
         #region Public Methods
 
-        public List<Item> GetItems()
+        public async Task<List<Item>> GetItems()
         {
-            var items = _context.Items.Include(x => x.Category)
-                                      .AsEnumerable()
+           var items = await _context.Items.Include(x => x.Category)
+                                      //.AsEnumerable()
                                       .Where(x => !x.IsDeleted)
-                                      .OrderBy(x => x.Name)
-                                      .ToList();
+                                      .ToListAsync();
 
-            return items;
+            return items.OrderBy(x => x.Name).ToList();
         }
 
-        public List<ItemDTO> GetItemsByDateRange(DateTime minDateValue, DateTime maxDateValue)
+        public async Task<List<ItemDTO>> GetItemsByDateRange(DateTime minDateValue, DateTime maxDateValue)
         {
-            var items = _context.Items.Include(x => x.Category)
+            return await _context.Items.Include(x => x.Category)
                                       .Where(x => x.CreatedDate >= minDateValue &&
                                             x.CreatedDate <= maxDateValue)
                                       .ProjectTo<ItemDTO>(_mapper.ConfigurationProvider)
-                                      .ToList();
-            return items;
+                                      .ToListAsync();
         }
 
-        public List<GetItemsForListingDTO> GetItemsForListingsFromProcedure()
+        public async Task<List<GetItemsForListingDTO>> GetItemsForListingsFromProcedure()
         {
-            return _context.ItemsForListing
+            return await _context.ItemsForListing
                         .FromSqlRaw("EXECUTE [dbo].[GetItemsForListing]")
-                        .ToList();
+                        .ToListAsync();
         }
 
-        public List<GetItemsTotalValueDTO> GetItemsTotalValues(bool isActive)
+        public async Task<List<GetItemsTotalValueDTO>> GetItemsTotalValues(bool isActive)
         {
             var isActiveParam = new SqlParameter("IsActive", 1);
 
-            return _context.GetItemsTotalValues
-                        .FromSqlRaw("SELECT * FROM [dbo].[GetItemsTotalValue] (@IsActive)", isActiveParam)
-                        .ToList();
+            return await _context.GetItemsTotalValues
+                            .FromSqlRaw(
+                                "SELECT * FROM [dbo].[GetItemsTotalValue] (@IsActive)",
+                                isActiveParam)
+                            .ToListAsync();
         }
 
-        public List<FullItemDetailsDTO> GetItemsWithGenresAndCategories()
+        public async Task<List<FullItemDetailsDTO>> GetItemsWithGenresAndCategories()
         {
-            return _context.FullItemDetails
-                        .FromSqlRaw("SELECT * FROM [dbo].[ViewFullItemDetails]")
-                        .AsEnumerable()
-                        .OrderBy(x => x.ItemName).ThenBy(x => x.GenreName)
-                        .ThenBy(x => x.Category).ThenBy(x => x.PlayerName)
-                        .ToList();
-        }
+            var result = await _context.FullItemDetails
+                                    .FromSqlRaw(
+                                        "SELECT * FROM [dbo].[ViewFullItemDetails]")
+                                    //.AsEnumerable()
+                                    .ToListAsync();
+            return result.OrderBy(x => x.ItemName).ThenBy(x => x.GenreName)
+                         .ThenBy(x => x.Category).ThenBy(x => x.PlayerName)
+                         .ToList();
+       }
 
-        public int UpsertItem(Item item)
+        public async Task<int> UpsertItem(Item item)
         {
             if (item.Id > 0)
-                return UpdateItem(item);
+                return await UpdateItem(item);
 
-            return CreateItem(item);
+            return await CreateItem(item);
         }
 
-        public void UsertItems(List<Item> items)
+        public async Task UsertItems(List<Item> items)
         {
             using (var scope = new TransactionScope (
                 TransactionScopeOption.Required,
                 new TransactionOptions
                 {
                     IsolationLevel = IsolationLevel.ReadCommitted
-                })
+                },
+                TransactionScopeAsyncFlowOption.Enabled)
             )
             {
                 try
                 {
                     foreach (var item in items)
                     {
-                        bool success = UpsertItem(item) > 0;
+                        bool success = await UpsertItem(item) > 0;
                         if (success is false)
                             throw new Exception(
                                 $"Error while saving the item {item.Name}");
@@ -121,29 +124,30 @@ namespace EFCore.Inventory.DatabaseAccessLayer
             }
         }
 
-        public void DeleteItem(int id)
+        public async Task DeleteItem(int id)
         {
-            var item = _context.Items.FirstOrDefault(x => x.Id == id);
+            var item = await _context.Items.FirstOrDefaultAsync(x => x.Id == id);
             if (item is null) return;
             item.IsDeleted = true;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteItems(List<int> itemIds)
+        public async Task DeleteItems(List<int> itemIds)
         {
             using (var scope = new TransactionScope(
                 TransactionScopeOption.Required,
                 new TransactionOptions
                 {
                     IsolationLevel = IsolationLevel.ReadCommitted
-                })
+                },
+                TransactionScopeAsyncFlowOption.Enabled)
             )
             {
                 try
                 {
                     foreach (var itemId in itemIds)
                     {
-                        DeleteItem(itemId);
+                        await DeleteItem(itemId);
                     }
 
                     scope.Complete();
@@ -156,31 +160,33 @@ namespace EFCore.Inventory.DatabaseAccessLayer
                 }
             }
         }
+
         #endregion
 
         #region Private Heleper Methods
 
-        private int CreateItem(Item item)
+        private async Task<int> CreateItem(Item item)
         {
-            _context.Items.Add(item);
-            _context.SaveChanges();
+            await _context.Items.AddAsync(item);
+            await _context.SaveChangesAsync();
 
-            var newItem = _context.Items.ToList()
-                                .FirstOrDefault(x => 
-                                    x.Name.ToLower().Equals(item.Name.ToLower()));
+            //var items = await _context.Items.ToListAsync();
+            //var newItem = items.FirstOrDefault(x =>
+            //                        x.Name.ToLower().Equals(item.Name.ToLower()));
 
-            if (newItem is null)
+            if (item.Id <= 0)
                 throw new Exception("Could not create the item as expected.");
 
-            return newItem.Id;
+            return item.Id;
         }
 
-        private int UpdateItem(Item item)
+        private async Task<int> UpdateItem(Item item)
         {
-            var dbItem = _context.Items.Include(x => x.Category)
+            var dbItem = await _context.Items
+                                       .Include(x => x.Category)
                                        .Include(x => x.Genres)
                                        .Include(x => x.Players)
-                                       .FirstOrDefault(x => x.Id == item.Id);
+                                       .FirstOrDefaultAsync(x => x.Id == item.Id);
             if (dbItem is null)
                 throw new Exception("Item not found!");
 
@@ -199,7 +205,7 @@ namespace EFCore.Inventory.DatabaseAccessLayer
             dbItem.Quantity = item.Quantity;
             dbItem.SoldDate = item.SoldDate;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return item.Id;
         }
 

@@ -23,45 +23,51 @@ namespace EFCore.Inventory.BusinessLogicLayer
             _mapper = mapper;
         }
 
+        public ItemsService(IItemsRepo dbRepo, IMapper mapper)
+        {
+            _dbRepo = dbRepo;
+            _mapper = mapper;
+        }
+
         #endregion
 
         #region Public Methods
 
-        public string GetAllItemsPipeDelimitedString()
+        public async Task<string> GetAllItemsPipeDelimitedString()
         {
-            var items = GetItems();
+            var items = await GetItems();
             return String.Join(" | ", items);
         }
 
-        public List<ItemDTO> GetItems() 
-            => _mapper.Map<List<ItemDTO>>(_dbRepo.GetItems());
+        public async Task<List<ItemDTO>> GetItems() 
+            => _mapper.Map<List<ItemDTO>>(await _dbRepo.GetItems());
 
-        public List<ItemDTO> GetItemsByDateRange(DateTime minDateValue, DateTime maxDateValue) 
-            => _dbRepo.GetItemsByDateRange(minDateValue, maxDateValue);
+        public async Task<List<ItemDTO>> GetItemsByDateRange(DateTime minDateValue, DateTime maxDateValue) 
+            => await _dbRepo.GetItemsByDateRange(minDateValue, maxDateValue);
 
-        public List<GetItemsForListingDTO> GetItemsForListingFromProcedure() 
-            => _dbRepo.GetItemsForListingsFromProcedure();
+        public async Task<List<GetItemsForListingDTO>> GetItemsForListingFromProcedure() 
+            => await _dbRepo.GetItemsForListingsFromProcedure();
 
-        public List<GetItemsTotalValueDTO> GetItemsTotalValues(bool isActive) 
-            => _dbRepo.GetItemsTotalValues(isActive);
+        public async Task<List<GetItemsTotalValueDTO>> GetItemsTotalValues(bool isActive) 
+            => await _dbRepo.GetItemsTotalValues(isActive);
 
-        public List<FullItemDetailsDTO> GetItemsWithGenresAndCategories() 
-            => _dbRepo.GetItemsWithGenresAndCategories();
+        public async Task<List<FullItemDetailsDTO>> GetItemsWithGenresAndCategories() 
+            => await _dbRepo.GetItemsWithGenresAndCategories();
 
-        public int UpsertItem(CreateOrUpdateItemDTO item)
+        public async Task<int> UpsertItem(CreateOrUpdateItemDTO item)
         {
             if(item.CategoryId <= 0)
             {
                 throw new ArgumentException("Please set the category id before insert or update");
             }
-            return _dbRepo.UpsertItem(_mapper.Map<Item>(item));
+            return await _dbRepo.UpsertItem(_mapper.Map<Item>(item));
         }
 
-        public void UpsertItems(List<CreateOrUpdateItemDTO> items)
+        public async Task UpsertItems(List<CreateOrUpdateItemDTO> items)
         {
             try
             {
-                _dbRepo.UsertItems(_mapper.Map<List<Item>>(items));
+                await _dbRepo.UsertItems(_mapper.Map<List<Item>>(items));
             }
             catch (Exception ex)
             {
@@ -70,19 +76,19 @@ namespace EFCore.Inventory.BusinessLogicLayer
             }
         }
 
-        public void DeleteItem(int id)
+        public async Task DeleteItem(int id)
         {
             if (id <= 0)
                 throw new ArgumentException("Please set a valid item id before deleting.");
 
-            _dbRepo.DeleteItem(id);
+            await _dbRepo.DeleteItem(id);
         }
 
-        public void DeleteItems(List<int> itemIds)
+        public async Task DeleteItems(List<int> itemIds)
         {
             try
             {
-                _dbRepo.DeleteItems(itemIds);
+                await _dbRepo.DeleteItems(itemIds);
             }
             catch (Exception ex)
             {
@@ -90,7 +96,6 @@ namespace EFCore.Inventory.BusinessLogicLayer
                 Console.WriteLine($"The transaction has failed: {ex.Message}");
             }
         }
-
 
         #endregion
     }

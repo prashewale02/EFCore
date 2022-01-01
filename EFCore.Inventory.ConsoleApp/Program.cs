@@ -34,7 +34,7 @@ namespace EFCore.Inventory.ConsoleApp
 
         #endregion
 
-        static void Main(String[] args)
+        static async Task Main(String[] args)
         {
             Console.WriteLine("***** Welcome to Entity Framework Core 6 *****");
 
@@ -46,28 +46,28 @@ namespace EFCore.Inventory.ConsoleApp
                 _itemsService = new ItemsService(db, _mapper);
                 _categoriesService = new CategoriesService(db, _mapper);
 
-                ListInventory();
+                await ListInventory();
                 Console.WriteLine();
 
                 //ListInventoryWithProjection();
                 //Console.WriteLine();
 
-                ListCategoriesAndColors();
+                await ListCategoriesAndColors();
                 Console.WriteLine();
 
-                GetItemsForListing();
+                await GetItemsForListing();
                 Console.WriteLine();
 
-                GetItemsForListingLinq();
+                await GetItemsForListingLinq();
                 Console.WriteLine();
 
-                GetAllActiveItemsAsPipeDelimitedString();
+                await GetAllActiveItemsAsPipeDelimitedString();
                 Console.WriteLine();
 
-                GetItemsTotalValues();
+                await GetItemsTotalValues();
                 Console.WriteLine();
 
-                GetFullItemDetails();
+                await GetFullItemDetails();
                 Console.WriteLine();
 
                 Console.Write("Would you like to create items? [Yes / No] => ");
@@ -76,9 +76,9 @@ namespace EFCore.Inventory.ConsoleApp
                         StringComparison.OrdinalIgnoreCase) ?? false)
                 {
                     Console.WriteLine("\tAdding new Item(s)...");
-                    CreateMultipleItems();
+                    await CreateMultipleItems();
                     Console.WriteLine("\tItems added successfully.");
-                    ListInventory();
+                    await ListInventory();
                     Console.Write("Would you like to continue making items? [Yes / No] => ");
                 }
 
@@ -87,9 +87,9 @@ namespace EFCore.Inventory.ConsoleApp
                 while(Console.ReadLine()?.StartsWith("y", StringComparison.OrdinalIgnoreCase) ?? false)
                 {
                     Console.WriteLine($"\tUpdating Item(s)...");
-                    UpdateMultipleItems();
+                    await UpdateMultipleItems();
                     Console.WriteLine($"\tItems updated successfully.");
-                    ListInventory();
+                    await ListInventory();
                     Console.Write($"Would you like to continue updating items? [Yes / No] => ");
                 }
 
@@ -98,13 +98,11 @@ namespace EFCore.Inventory.ConsoleApp
                 while(Console.ReadLine()?.StartsWith("y", StringComparison.OrdinalIgnoreCase) ?? false)
                 {
                     Console.WriteLine($"\tDeleting new Item(s)...");
-                    DeleteMultipleItems();
+                    await DeleteMultipleItems();
                     Console.WriteLine($"\tItems updated successfully.");
-                    ListInventory();
+                    await ListInventory();
                     Console.Write($"Would you like to continue deleting items? [Yes / No] => ");
                 }
-
-
             }
 
             Console.WriteLine();
@@ -142,13 +140,13 @@ namespace EFCore.Inventory.ConsoleApp
             return _mapperConfig.CreateMapper();
         }
 
-        private static void ListInventory()
+        private static async Task ListInventory()
         {
             if (_itemsService is null)
                 return;
 
             Console.WriteLine("-> Inventory Items : ");
-            var result = _itemsService.GetItems();
+            var result = await _itemsService.GetItems();
             result.ForEach(x => Console.WriteLine($"\tItem : " +
                 $"{x.Name,-40} - {x.Description} has category {x.CategoryName}"));
         }
@@ -168,14 +166,14 @@ namespace EFCore.Inventory.ConsoleApp
         //    }
         //}
 
-        private static void GetItemsForListing()
+        private static async Task GetItemsForListing()
         {
             if (_itemsService is null)
                 return;
 
             Console.WriteLine("-> Getting Items For Listing :");
 
-            var results = _itemsService.GetItemsForListingFromProcedure();
+            var results = await _itemsService.GetItemsForListingFromProcedure();
 
             foreach (var item in results)
             {
@@ -188,7 +186,7 @@ namespace EFCore.Inventory.ConsoleApp
             }
         }
 
-        private static void GetItemsForListingLinq() 
+        private static async Task GetItemsForListingLinq() 
         {
             if (_itemsService is null)
                 return;
@@ -197,33 +195,34 @@ namespace EFCore.Inventory.ConsoleApp
             var minDateValue = new DateTime(2021, 1, 1);
             var maxDateValue = new DateTime(2024, 1, 1);
 
-            var results = _itemsService.GetItemsByDateRange(minDateValue, maxDateValue)
-                                    .OrderBy(y => y.CategoryName).ThenBy(z => z.Name);
+            var results = await _itemsService.GetItemsByDateRange(minDateValue,
+                                                maxDateValue);
             
-            foreach (var itemDTO in results)
+            foreach (var itemDTO in results.OrderBy(y => y.CategoryName)
+                                           .ThenBy(z => z.Name))
             {
                 Console.WriteLine($"\t{itemDTO}");
             }
         }
 
-        private static void GetAllActiveItemsAsPipeDelimitedString()
+        private static async Task GetAllActiveItemsAsPipeDelimitedString()
         {
             if (_itemsService is null)
                 return;
 
             using (var db = new InventoryDbContext(_optionsBuilder.Options))
             {
-                Console.WriteLine($"-> All Active Items: { _itemsService.GetAllItemsPipeDelimitedString() ?? "No Items Found." }");
+                Console.WriteLine($"-> All Active Items: { await _itemsService.GetAllItemsPipeDelimitedString() ?? "No Items Found." }");
             }
         }
 
-        private static void GetItemsTotalValues()
+        private static async Task GetItemsTotalValues()
         {
             if (_itemsService is null)
                 return;
 
             Console.WriteLine("-> Items Totals : ");
-            var results = _itemsService.GetItemsTotalValues(true);
+            var results = await _itemsService.GetItemsTotalValues(true);
 
             Console.WriteLine($"\t{"ID",-10}{"Name",-50}{"Quantity",-15}{"TotalValue",-20}");
 
@@ -238,14 +237,14 @@ namespace EFCore.Inventory.ConsoleApp
             }
         }
 
-        private static void GetFullItemDetails()
+        private static async Task GetFullItemDetails()
         {
             if (_itemsService is null)
                 return;
 
             Console.WriteLine("-> Items Details : ");
 
-            var result = _itemsService.GetItemsWithGenresAndCategories();
+            var result = await _itemsService.GetItemsWithGenresAndCategories();
             
             Console.WriteLine($"\t{"ID",-5}{"ItemName",-40}{"PlayerName",-20}{"Category",-10}{"GenreName",-10}{"ItemDescription",-50}");
 
@@ -262,14 +261,14 @@ namespace EFCore.Inventory.ConsoleApp
             }
         }
 
-        private static void ListCategoriesAndColors()
+        private static async Task ListCategoriesAndColors()
         {
             if (_categoriesService is null)
                 return;
 
             Console.WriteLine("-> List categories and colors :");
 
-            var results = _categoriesService.ListCategoriesAndDetails();
+            var results = await _categoriesService.ListCategoriesAndDetails();
 
             foreach (var c in results)
             {
@@ -279,7 +278,7 @@ namespace EFCore.Inventory.ConsoleApp
             _categories = results;
         }
         
-        private static void CreateMultipleItems()
+        private static async Task CreateMultipleItems()
         {
             if (_itemsService is null)
                 return;
@@ -304,7 +303,7 @@ namespace EFCore.Inventory.ConsoleApp
 
                 if(batchCreate is false)
                 {
-                    _itemsService.UpsertItem(newItem);
+                    await _itemsService.UpsertItem(newItem);
                 }
                 else
                 {
@@ -315,11 +314,11 @@ namespace EFCore.Inventory.ConsoleApp
                 createAnother = Console.ReadLine()?.StartsWith("y", StringComparison.OrdinalIgnoreCase) ?? false;
 
                 if (batchCreate is true && createAnother is false)
-                    _itemsService.UpsertItems(allItems);
+                    await _itemsService.UpsertItems(allItems);
             }
         }
         
-        private static void UpdateMultipleItems()
+        private static async Task UpdateMultipleItems()
         {
             if (_itemsService is null)
                 return;
@@ -332,7 +331,7 @@ namespace EFCore.Inventory.ConsoleApp
             while(updateAnother is true)
             {
                 Console.WriteLine($"\t\tItems:");
-                var items = _itemsService.GetItems();
+                var items = await _itemsService.GetItems();
                 Console.WriteLine($"\t\t{"ID", -5}{"Name", -50}");
                 items.ForEach(x => Console.WriteLine($"\t\t{x.Id,-5}{x.Name,-50}"));
                 Console.WriteLine($"\t\t*********************************************");
@@ -369,7 +368,7 @@ namespace EFCore.Inventory.ConsoleApp
 
                         if(batchUpdate is false)
                         {
-                            _itemsService.UpsertItem(updateItem);
+                            await _itemsService.UpsertItem(updateItem);
                         }
                         else
                         {
@@ -382,12 +381,12 @@ namespace EFCore.Inventory.ConsoleApp
                 updateAnother = Console.ReadLine().StartsWith("y", StringComparison.OrdinalIgnoreCase);
                 if (batchUpdate is true && updateAnother is false)
                 {
-                    _itemsService.UpsertItems(allItems);
+                    await _itemsService.UpsertItems(allItems);
                 }
             }
         }
 
-        private static void DeleteMultipleItems()
+        private static async Task DeleteMultipleItems()
         {
             if (_itemsService is null)
                 return;
@@ -400,7 +399,7 @@ namespace EFCore.Inventory.ConsoleApp
             while(deleteAnother is true)
             {
                 Console.WriteLine($"\t\tItems:");
-                var items = _itemsService.GetItems();
+                var items = await _itemsService.GetItems();
                 Console.WriteLine($"\t\t{"ID", -5}{"Name", -50}");
                 items.ForEach(x => Console.WriteLine($"\t\t{x.Id,-5}{x.Name,-50}"));
                 Console.WriteLine($"\t\t*********************************************");
@@ -431,7 +430,7 @@ namespace EFCore.Inventory.ConsoleApp
                             Console.Write($"\t\tAre you sure you want to delete the item {itemMatch.Id} - {itemMatch.Name} [Yes/No] : ");
                             if (Console.ReadLine().StartsWith("y", StringComparison.OrdinalIgnoreCase))
                             {
-                                _itemsService.DeleteItem(itemMatch.Id);
+                                await _itemsService.DeleteItem(itemMatch.Id);
                                 Console.WriteLine($"\t\tItem Deleted.");
                             }
                         }
@@ -448,14 +447,12 @@ namespace EFCore.Inventory.ConsoleApp
                     Console.WriteLine($"");
                     if (Console.ReadLine().StartsWith("y", StringComparison.OrdinalIgnoreCase))
                     {
-                        _itemsService.DeleteItems(allItems);
+                        await _itemsService.DeleteItems(allItems);
                         Console.WriteLine($"Items Deleted.");
                     }
                 }
             }
         }
-
-
 
         private static int GetCategoryId(string? name)
         {

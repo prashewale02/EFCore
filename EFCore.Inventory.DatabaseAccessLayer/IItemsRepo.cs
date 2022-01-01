@@ -5,14 +5,14 @@ namespace EFCore.Inventory.DatabaseAccessLayer
 {
     public interface IItemsRepo
     {
-        List<Item> GetItems();
-        List<ItemDTO> GetItemsByDateRange(DateTime minDateValue, DateTime maxDateValue);
-        List<GetItemsForListingDTO> GetItemsForListingsFromProcedure();
-        List<GetItemsTotalValueDTO> GetItemsTotalValues(bool isActive);
-        List<FullItemDetailsDTO> GetItemsWithGenresAndCategories();
-        int UpsertItem(Item item);
-        void UsertItems(List<Item> items);
-        void DeleteItem(int id);
-        void DeleteItems(List<int> itemIds);
+        Task<List<Item>> GetItems();
+        Task<List<ItemDTO>> GetItemsByDateRange(DateTime minDateValue, DateTime maxDateValue);
+        Task<List<GetItemsForListingDTO>> GetItemsForListingsFromProcedure();
+        Task<List<GetItemsTotalValueDTO>> GetItemsTotalValues(bool isActive);
+        Task<List<FullItemDetailsDTO>> GetItemsWithGenresAndCategories();
+        Task<int> UpsertItem(Item item);
+        Task UsertItems(List<Item> items);
+        Task DeleteItem(int id);
+        Task DeleteItems(List<int> itemIds);
     }
 }

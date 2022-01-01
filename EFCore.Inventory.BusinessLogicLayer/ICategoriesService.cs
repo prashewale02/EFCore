@@ -4,6 +4,6 @@ namespace EFCore.Inventory.BusinessLogicLayer
 {
     public interface ICategoriesService
     {
-        List<CategoryDTO> ListCategoriesAndDetails();
+        Task<List<CategoryDTO>> ListCategoriesAndDetails();
     }
 }
