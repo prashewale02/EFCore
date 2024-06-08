@@ -36,7 +36,7 @@ namespace EFCore.Inventory.ConsoleApp
 
         static async Task Main(String[] args)
         {
-            Console.WriteLine("***** Welcome to Entity Framework Core 6 *****");
+            Console.WriteLine("***** Welcome to Console App *****");
 
             BuildOptions();
             _mapper = BuildMapper();
